@@ -3,31 +3,38 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { FiPackage, FiUsers, FiLock, FiUser, FiArrowRight } from 'react-icons/fi';
+import { FiPackage, FiUsers, FiLock, FiUser, FiArrowRight, FiCheck } from 'react-icons/fi';
 
-export default function LoginPage() {
+export default function GirisSayfasi() {
   const router = useRouter();
-  const [selectedRole, setSelectedRole] = useState<'depo' | 'yonetici' | null>(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [rol, setRol] = useState<string | null>(null);
+  const [kullaniciAdi, setKullaniciAdi] = useState('');
+  const [sifre, setSifre] = useState('');
+  const [hata, setHata] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const girisYap = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    // Basit doğrulama için örnek kullanıcı bilgileri
-    const users = {
-      depo: { username: 'depo', password: 'depo123' },
-      yonetici: { username: 'admin', password: 'admin123' }
-    };
-
-    const user = users[selectedRole!];
-    if (user && user.username === username && user.password === password) {
-      localStorage.setItem('role', selectedRole!);
-      router.push(selectedRole === 'depo' ? '/depocu' : '/yonetici');
+    
+    if (!kullaniciAdi || !sifre) {
+      setHata('Kullanıcı adı ve şifre gereklidir.');
+      return;
+    }
+    
+    // Demo amaçlı basit kimlik doğrulama - gerçek uygulamada API ile yapılmalıdır
+    if (kullaniciAdi === 'yonetici' && sifre === 'Depo2024!' && rol === 'yonetici') {
+      // Yönetici girişi başarılı
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('kullanici', JSON.stringify({ id: '1', kullaniciAdi, rol }));
+      }
+      router.push('/yonetici');
+    } else if (kullaniciAdi === 'depocu' && sifre === 'Depo2024@' && rol === 'depocu') {
+      // Depocu girişi başarılı
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('kullanici', JSON.stringify({ id: '2', kullaniciAdi, rol }));
+      }
+      router.push('/depocu');
     } else {
-      setError('Kullanıcı adı veya şifre hatalı!');
+      setHata('Geçersiz kullanıcı adı veya şifre.');
     }
   };
 
@@ -61,6 +68,12 @@ export default function LoginPage() {
                 </div>
                 <div className="flex items-center">
                   <div className="bg-blue-500/20 p-2 rounded-lg">
+                    <FiCheck className="h-6 w-6" />
+                  </div>
+                  <p className="ml-4">Detaylı raporlama ve analiz</p>
+                </div>
+                <div className="flex items-center">
+                  <div className="bg-blue-500/20 p-2 rounded-lg">
                     <FiUsers className="h-6 w-6" />
                   </div>
                   <p className="ml-4">Rol bazlı erişim kontrolü</p>
@@ -78,7 +91,7 @@ export default function LoginPage() {
               className="space-y-8"
             >
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Hoş Geldiniz</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Sisteme Giriş</h2>
                 <p className="text-gray-600">Lütfen giriş yapmak için rolünüzü seçin</p>
               </div>
 
@@ -87,38 +100,38 @@ export default function LoginPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => setSelectedRole('depo')}
+                  onClick={() => setRol('yonetici')}
                   className={`p-4 rounded-xl border-2 transition-all ${
-                    selectedRole === 'depo'
-                      ? 'border-blue-600 bg-blue-50 text-blue-600'
-                      : 'border-gray-200 hover:border-blue-200'
-                  }`}
-                >
-                  <FiPackage className="h-6 w-6 mx-auto mb-2" />
-                  <span className="block text-sm font-medium">Depo Girişi</span>
-                </motion.button>
-
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setSelectedRole('yonetici')}
-                  className={`p-4 rounded-xl border-2 transition-all ${
-                    selectedRole === 'yonetici'
+                    rol === 'yonetici'
                       ? 'border-blue-600 bg-blue-50 text-blue-600'
                       : 'border-gray-200 hover:border-blue-200'
                   }`}
                 >
                   <FiUsers className="h-6 w-6 mx-auto mb-2" />
-                  <span className="block text-sm font-medium">Yönetici Girişi</span>
+                  <span className="block text-sm font-medium">Yönetici</span>
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setRol('depocu')}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    rol === 'depocu'
+                      ? 'border-blue-600 bg-blue-50 text-blue-600'
+                      : 'border-gray-200 hover:border-blue-200'
+                  }`}
+                >
+                  <FiPackage className="h-6 w-6 mx-auto mb-2" />
+                  <span className="block text-sm font-medium">Depo</span>
                 </motion.button>
               </div>
 
               {/* Giriş formu */}
-              {selectedRole && (
+              {rol && (
                 <motion.form
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  onSubmit={handleLogin}
+                  onSubmit={girisYap}
                   className="space-y-6"
                 >
                   <div>
@@ -131,10 +144,10 @@ export default function LoginPage() {
                       </div>
                       <input
                         type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={kullaniciAdi}
+                        onChange={(e) => setKullaniciAdi(e.target.value)}
                         className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Kullanıcı adınızı girin"
+                        placeholder=""
                         required
                       />
                     </div>
@@ -150,34 +163,45 @@ export default function LoginPage() {
                       </div>
                       <input
                         type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={sifre}
+                        onChange={(e) => setSifre(e.target.value)}
                         className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Şifrenizi girin"
+                        placeholder=""
                         required
                       />
                     </div>
                   </div>
 
-                  {error && (
+                  {hata && (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="text-red-500 text-sm"
                     >
-                      {error}
+                      {hata}
                     </motion.div>
                   )}
 
-                  <motion.button
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                    type="submit"
-                    className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    <span>Giriş Yap</span>
-                    <FiArrowRight className="ml-2 h-5 w-5" />
-                  </motion.button>
+                  <div className="flex gap-3">
+                    <motion.button
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                      type="button"
+                      onClick={() => setRol(null)}
+                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    >
+                      Geri
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                      type="submit"
+                      className="flex-1 flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      <span>Giriş Yap</span>
+                      <FiArrowRight className="ml-2 h-5 w-5" />
+                    </motion.button>
+                  </div>
                 </motion.form>
               )}
             </motion.div>
@@ -186,4 +210,4 @@ export default function LoginPage() {
       </motion.div>
     </div>
   );
-}
+} 
