@@ -7,36 +7,6 @@ import { SayimKarti } from '@/types';
 import Bildirimler from '@/components/Bildirimler';
 import { PlusIcon, ChartBarIcon, CubeIcon } from '@heroicons/react/24/outline';
 
-// Demo verisi
-const demoSayimlar: SayimKarti[] = [
-  {
-    id: '1',
-    sayimNo: 'SAY001',
-    tarih: new Date(),
-    sayimAdi: 'Genel Sayım 1',
-    urunler: [
-      { id: '1', kod: 'PRD001', urunAdi: 'Ürün 1', beklenenAdet: 100, createdAt: new Date(), updatedAt: new Date() },
-      { id: '2', kod: 'PRD002', urunAdi: 'Ürün 2', beklenenAdet: 150, createdAt: new Date(), updatedAt: new Date() },
-      { id: '3', kod: 'PRD003', urunAdi: 'Ürün 3', beklenenAdet: 200, createdAt: new Date(), updatedAt: new Date() }
-    ],
-    durum: 'beklemede',
-    olusturanKullanici: 'admin'
-  },
-  {
-    id: '2',
-    sayimNo: 'SAY002',
-    tarih: new Date(),
-    sayimAdi: 'Genel Sayım 2',
-    urunler: [
-      { id: '4', kod: 'PRD004', urunAdi: 'Ürün 4', beklenenAdet: 75, createdAt: new Date(), updatedAt: new Date() },
-      { id: '5', kod: 'PRD005', urunAdi: 'Ürün 5', beklenenAdet: 125, createdAt: new Date(), updatedAt: new Date() },
-      { id: '6', kod: 'PRD006', urunAdi: 'Ürün 6', beklenenAdet: 175, createdAt: new Date(), updatedAt: new Date() }
-    ],
-    durum: 'beklemede',
-    olusturanKullanici: 'admin'
-  }
-];
-
 export default function YoneticiAnaSayfa() {
   const [bekleyenSayimlar, setBekleyenSayimlar] = useState<SayimKarti[]>([]);
   const [tamamlananSayimlar, setTamamlananSayimlar] = useState<SayimKarti[]>([]);
