@@ -18,8 +18,8 @@ export default function LoginPage() {
 
     // Basit doğrulama için örnek kullanıcı bilgileri
     const users = {
-      depo: { username: 'depo', password: 'depo123' },
-      yonetici: { username: 'admin', password: 'admin123' }
+      depo: { username: 'depocu', password: 'depocu123' },
+      yonetici: { username: 'yonetici', password: 'yonetici123' }
     };
 
     const user = users[selectedRole!];
