@@ -21,13 +21,13 @@ export default function GirisSayfasi() {
     }
     
     // Demo amaçlı basit kimlik doğrulama - gerçek uygulamada API ile yapılmalıdır
-    if (kullaniciAdi === 'yonetici' && sifre === 'Depo2024!' && rol === 'yonetici') {
+    if (kullaniciAdi === 'admin' && sifre === 'tasdanlar.2751' && rol === 'yonetici') {
       // Yönetici girişi başarılı
       if (typeof window !== 'undefined') {
         localStorage.setItem('kullanici', JSON.stringify({ id: '1', kullaniciAdi, rol }));
       }
       router.push('/yonetici');
-    } else if (kullaniciAdi === 'depocu' && sifre === 'Depo2024@' && rol === 'depocu') {
+    } else if (kullaniciAdi === 'depo' && sifre === 'depo.2025' && rol === 'depocu') {
       // Depocu girişi başarılı
       if (typeof window !== 'undefined') {
         localStorage.setItem('kullanici', JSON.stringify({ id: '2', kullaniciAdi, rol }));
